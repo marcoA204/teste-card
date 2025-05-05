@@ -19,8 +19,9 @@ int main() {
     printf("1 - Pão frances         - R$ 0.50\n");
     printf("2 - Pão de queijo       - R$ 2.00\n");
     printf("3 - Pão de coco         - R$ 0.50\n");
-    printf("4 - Café pequeno         - R$ 3.00\n");
-    printf("5 - Suco Natural         - R$ 4.50\n");
+    printf("4 - Café pequeno        - R$ 3.00\n");
+    printf("5 - Suco Natural        - R$ 4.50\n");
+    printf("6 - Bolo de fuba        - R$ 4.00\n");
 
     printf("0 - Finalizar pedido\n");
 
@@ -55,6 +56,11 @@ int main() {
             printf("Unidades de Suco natural: ");
             scanf("%d", &quantidade);
             total += quantidade * 4.50;
+            break;
+        case 6: 
+            printf("Unidade de Bolo de fuba: ");
+            scanf("%d", &quantidade);
+            total += quantidade * 4.00;
             break;
         case 0:
             printf("\nPedido finalizado.\n");
