@@ -16,11 +16,11 @@ int main() {
    struct Item cardapio[] = 
    {
     {"Pao frances", 0.50},
-    {"Pao de queijo", 2.00},
+    {"Pao de queijo", 1.00},
     {"Pao  de coco", 0.50},
     {"cafe pequeno", 3.00},
-    {"Suco natural", 4.50},
-    {"Bolo de fuba", 4.00},
+    {"Suco natural", 3.50},
+    {"Bolo de fuba", 5.00},
    };
    
    int numItens = sizeof(cardapio)/sizeof(cardapio[0]);
