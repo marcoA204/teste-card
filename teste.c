@@ -1,80 +1,127 @@
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
+
+struct Item
+{
+    char nome[30];
+    float preco;
+};
+
 
 int main() {
 
     setlocale(LC_ALL, "portuguese");
 
-    int card;
-    int opcao;
-    int ola;
-    int quantidade;
-    float total = 0;
+   struct Item cardapio[] = 
+   {
+    {"Pao frances", 0.50},
+    {"Pao de queijo", 2.00},
+    {"Pao  de coco", 0.50},
+    {"cafe pequeno", 3.00},
+    {"Suco natural", 4.50},
+    {"Bolo de fuba", 4.00},
+   };
+   
+   int numItens = sizeof(cardapio)/sizeof(cardapio[0]);
+   int continuarAtendimento = 1;
 
-    printf("Bem vindo! a padaria do seu Ze\n");
-    printf("O que gostaria do nosso carpadio");
-    scanf("%d %d", &ola, &card);
+   while (continuarAtendimento){
+    int opcao, quantidade;
+    int quantidades[6] = {0};
+    float total = 0.0;
 
-    printf("====PADARIA DO SEU ZE ====\n");
-    printf("1 - Pão frances         - R$ 0.50\n");
-    printf("2 - Pão de queijo       - R$ 2.00\n");
-    printf("3 - Pão de coco         - R$ 0.50\n");
-    printf("4 - Café pequeno        - R$ 3.00\n");
-    printf("5 - Suco Natural        - R$ 4.50\n");
-    printf("6 - Bolo de fuba        - R$ 4.00\n");
+   printf("================\n");
+   printf("     BEM-VINDO A PADARIA DO SEU ZE      \n");
+   printf("   aqui esta o nosso carpadio:\n ");
 
-    printf("0 - Finalizar pedido\n");
+   for (int i = 0; i < numItens; i++)
+   {
+        printf("%d - %-20s - R$ %.2f\n", i + 1, cardapio[i].nome, cardapio[i].preco);
+   }
+   printf("0 - Finalizar pedido\n");
 
-    do
-    {
-        printf("\nEscolha um item do cardápio (0 para sair):");
-        scanf("%d", &opcao);
+   do
+   {
+    printf("\nEscolha um item do cardapio (0 para finalizar): ");
+    scanf("%d", &opcao);
 
-        switch (opcao)
+    if(opcao >= 1 && opcao <= numItens){
+        printf("Quantidade de %s: ", cardapio[opcao - 1]. nome);
+        scanf("%d", &quantidade);
+
+        if (quantidade < 0)
         {
-        case 1:
-            printf("Quantidade de Pão frances: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 0.50;
-            break;
-        case 2:
-            printf("Quantidade de Pão de queijo: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 2.00;
-            break;
-        case 3:
-            printf("Quantidade de Pão de coco: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 0.50;
-            break;
-        case 4:
-            printf("Unidade Café pequeno: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 3.00;
-            break;
-        case 5:
-            printf("Unidades de Suco natural: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 4.50;
-            break;
-        case 6: 
-            printf("Unidade de Bolo de fuba: ");
-            scanf("%d", &quantidade);
-            total += quantidade * 4.00;
-            break;
-        case 0:
-            printf("\nPedido finalizado.\n");
-            break;
-        default:
-            printf("Opçao inválida! Tente novamente.\n");    
-            break;
+            printf("Quantidade Invalida! Tente novamente.\n");
+            continue;
         }
-
-    } while (opcao != 0);
-
-    printf("Total a pagar: R$ %.2f\n", total);
-    printf("Obrigado pela preferencia!\n");
+        quantidades[opcao - 1] += quantidade;
+        total += quantidade * cardapio[opcao - 1].preco;
+        
+    }else if (opcao != 0)
+    {
+       printf("Opcao invalida! Tente novamente.\n");
+    }
     
+   } while (opcao != 0);
+   
+   printf("\n======= RESUMO DO PEDIDO =======\n");
+   for (int i = 0; i < numItens; i++)
+   {
+    if (quantidades[i] > 0)
+    {
+        printf("%dx %-20s - R$ %.2f\n", quantidades[i], cardapio[i].nome, quantidades[i] * cardapio[i].preco);
+    }
+    
+    
+   }
+   printf("-----------------------\n");
+   printf("Total a pagar: R$ %.2f\n", total);
 
-    return 0;
+   float desconto = 0.0;
+   if (total >= 100)
+   {
+    desconto = total * 0.10;
+    printf(" Desconto de 10%% aplicado!\n");
+   }else if (total >= 50)
+   {
+    desconto = total * 0.05;
+    printf("Desconto de 5%% aplicado!\n");
+   }
+   total -= desconto;
+
+   int forma;
+   printf("\n Formas de pagamento: \n");
+   printf("1 - Dinheiro\n");
+   printf("2 - Cartao\n");
+   printf("3 - PIX (5%% de desconto extra)\n");
+   printf("Escolha a forma de pagamento: ");
+   scanf("%d", &forma);
+
+   if (forma == 3)
+   {
+    float descontoPIX = total * 0.05;
+    total -= descontoPIX;
+    printf ("Desconto adicional de 5%% para pagamento via PIX: R$ %.2f\n", descontoPIX);
+   }
+   
+
+   float pago;
+   printf("Informe o valor a pago: R$ ");
+   scanf("%f", &pago);
+
+   if (pago < total)
+   {
+    printf("Valor insuficiente. Faltam R$ %.2f\n", pago - total);
+   }else{
+    printf("troco: R$ %.2f\n", pago - total);
+    printf("\n obrigado pela preferencia! Volte sempre!\n");
+   }
+
+   printf ("\n deseja atender um novo cliente? (1 - sim / 0 - nao):");
+   scanf("%d", &continuarAtendimento);
+
+   printf("\nEncerrando sistema da padaria. ate logo!\n");
+   }
+   return 0;
 }
